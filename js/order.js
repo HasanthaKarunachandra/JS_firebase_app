@@ -91,3 +91,36 @@ addToCart=()=>{
             tBody.html(rowData);
     });
 }
+
+placeOrder=()=>{
+
+    if(!selectedCustomer && !items){
+        alert('empty, try again');
+        return;
+    }
+
+    // items array, date, customer, total
+    let data ={
+        items:[],
+        customer:null,
+        date: new Date().toISOString().split('T')[0],
+        total:0
+    }
+
+    cart.forEach(e=>{
+        data.items.push(e);
+        data.total+=e.total;
+    });
+    data.customer=selectedCustomer;
+
+
+        database.collection('orders').add(data)
+        .then(result=>{
+            console.log(result);
+        })
+        .catch(error=>{
+            console.log(error);
+        })
+
+
+}
